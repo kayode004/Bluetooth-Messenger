@@ -38,7 +38,3 @@ topics:
   - communication
   - serial
   - connectivity
-dependencies:
-  flutter_bluetooth_classic_serial: ^1.0.1
-  flutter pub get
-  
