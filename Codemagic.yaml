@@ -1,0 +1,30 @@
+workflows:
+  android-release:
+    name: Android Release Build
+    max_build_duration: 60
+    environment:
+      flutter: "2.16.6"       # Compatible with Dart SDK
+      java: 11                # Fixes Unsupported class file major version 61
+      xcode: none             # iOS not needed
+    scripts:
+      # Step 1: Install dependencies
+      - name: Get Flutter packages
+        script: flutter pub get
+
+      # Step 2: Update Gradle wrapper to work with Java 11
+      - name: Fix Gradle wrapper
+        script: |
+          cd android
+          ./gradlew wrapper --gradle-version 7.3.3 --distribution-type all
+          cd ..
+
+      # Step 3: Build APK
+      - name: Build APK
+        script: flutter build apk --release
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+
+    publishing:
+      scripts:
+        - echo "APK build completed. Check artifacts folder."
